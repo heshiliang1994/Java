@@ -1,0 +1,24 @@
+1.zookeeper简介
+http://www.cnblogs.com/wuxl360/p/5817471.html
+
+2.设置watcher
+①getdata
+http://blog.csdn.net/lipeng_bigdata/article/details/50985811
+②getchildren
+http://blog.csdn.net/lipeng_bigdata/article/details/50986049
+③exists
+http://blog.csdn.net/lipeng_bigdata/article/details/50985993
+
+3.ZooKeeper 实现分布式队列
+http://www.cnblogs.com/luxiaoxun/p/4889764.html
+4.选举leader
+http://blog.csdn.net/cnh294141800/article/details/52959028
+5.Zookeeper锁机制
+
+6.基本原理
+http://www.cnblogs.com/luxiaoxun/p/4887452.html
+http://blog.csdn.net/tswisdom/article/details/41522069
+通常Zookeeper由2n+1台servers组成，每个server都知道彼此的存在。每个server都维护的内存状态镜像以及持久化存储的事务日志和快照。为了保证Leader选举能过得到多数的支持，所以ZooKeeper集群的数量一般为奇数。对于2n+1台server，只要有n+1台（大多数）server可用，整个系统保持可用。
+
+7.订阅发布者模式：
+http://www.cnblogs.com/kakaxisir/p/6667279.html
