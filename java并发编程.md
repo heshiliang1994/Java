@@ -1024,7 +1024,7 @@ HotSpot的作者经过研究发现，大多数情况下，锁不仅不存在多�
 
 自旋会消耗CPU，为了避免无用的自旋（比如获得锁的线程被阻塞住了），一旦锁升级成重量级锁，就不会再恢复到轻量级锁状态。当锁处于这个状态下，其他线程视图获取锁时，都会被阻塞住，当持有锁的线程释放锁之后会缓刑这些线程，被唤醒的线程就会进行新一轮的夺锁之争。
 
-![åç§éçå¯¹æ¯](C:\Users\17646\Desktop\简历内容\assets\16315cb91da523d9-1554461433556)
+![åç§éçå¯¹æ¯](.\assets\16315cb91da523d9-1554461433556)
 
 ### 
 
@@ -1036,11 +1036,11 @@ CAS、乐观锁与悲观锁、数据库相关锁机制、分布式锁、偏向�
 
 Lock是一个接口。
 
-![concurrentç®å½ç"æ.png](C:\Users\17646\Desktop\简历内容\assets\163260cff7a637f5-1554461432804)
+![concurrentç®å½ç"æ.png](./assets/163260cff7a637f5-1554461432804)
 
 上图是concurrent包的目录结构。其中包含两个子包：atomic以及lock，另外在concurrent下的阻塞队列以及executors，这些就是concurrent包中的精华。而这些类的实现主要是依赖于volatile以及CAS。从整体上看，concurrent包的整体实现图如下图：
 
-![concurrentåå®ç°æ´ä½ç¤ºæå¾.png](C:\Users\17646\Desktop\简历内容\assets\163260cff7cb847c-1554461432840)
+![concurrentåå®ç°æ´ä½ç¤ºæå¾.png](./assets/163260cff7cb847c-1554461432840)
 
 锁是用来控制多个线程访问共享资源的方式，一般来说，一个锁能够防止多个线程同时访问共享资源（但是有些锁可以允许多个线程并发的访问共享资源，比如读写锁）。在Lock接口出现之前，Java程序是靠synchronized关键字实现锁功能的，而Java SE 5之后，并发包中新增了Lock接口以及相关实现类来实现锁功能，**它提供了与synchronized关键字类似的同步功能，只是在使用时需要显式地获取和释放锁**。但却拥有了锁获取与释放的可操作性、可中断的获取所以及超时锁等多种synchronized关键字所不具备的同步特性。通常显示使用lock的形式如下：
 
@@ -3310,7 +3310,7 @@ public class ExchangerDemo {
 
 当一个并发任务提交给线程池，线程池分配线程去执行任务的过程如下图所示：
 
-![çº¿ç¨æ± æ§è¡æµç¨å¾.jpg](C:\Users\17646\Desktop\简历内容\assets\163349e503061169)
+![çº¿ç¨æ± æ§è¡æµç¨å¾.jpg](./assets/163349e503061169)
 
 从图可以看出，线程池执行所提交的任务过程主要有这样几个阶段：
 
@@ -3625,7 +3625,7 @@ public List<Runnable> shutdownNow() {
 
 线程池的类图：
 
-![QQ20170331-004227.png](C:\Users\17646\Desktop\简历内容\assets\QQ20170331-004227.png)
+![QQ20170331-004227.png](./assets/QQ20170331-004227.png)
 
 ##### 1）Executor框架接口：
 Executor框架是一个根据一组执行策略调用，调度，执行和控制的异步任务的框架，目的是提供一种将”任务提交”与”任务如何运行”分离开来的机制。
@@ -3723,7 +3723,7 @@ private static int ctlOf(int rs, int wc) { return rs | wc; }
   - workerCount为0；
   - 设置TIDYING状态成功。
 
-![threadpool-status.png](C:\Users\17646\Desktop\简历内容\assets\threadpool-status.png)
+![threadpool-status.png](.\assets\threadpool-status.png)
 
 ###### ②ThreadPoolExecutor构造方法
 
