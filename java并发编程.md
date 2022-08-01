@@ -584,13 +584,13 @@ public class Singleton {
 
 处理器和内存之间加入了高速缓存，L0、L1、L3缓存等
 
-![image-20200408213847606](.\java并发编程.assets\image-20200408213847606.png)
+![image-20200408213847606](./java并发编程.assets/image-20200408213847606.png)
 
 简化后的模型如下图：
 
 https://juejin.im/post/5dbfa0aa51882538ce1a4ebc
 
-![JMM](.\java并发编程.assets\computer.jpg)
+![JMM](./java并发编程.assets/computer.jpg)
 
 将运算需要使用到的数据复制到缓存中，让运算能够快速进行。当运算完成之后，再将缓存中的结果写入主内存，这样运算器就不用等待主内存的读写操作了。每个处理器都有自己的高速缓存，同时又共同操作同一块主内存，当多个处理器同时操作主内存时，可能导致数据不一致，因此需要“缓存一致性协议”来保障。比如，MSI、MESI等。
 
