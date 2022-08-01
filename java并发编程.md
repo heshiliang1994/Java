@@ -57,7 +57,7 @@
 
 （5）Java中线程状态转换
 
-![çº¿ç¨ç¶æè½¬æ¢å¾](C:\Users\17646\Desktop\简历内容\assets\163159b8a740b329-1554461432733)
+![çº¿ç¨ç¶æè½¬æ¢å¾](./assets/163159b8a740b329-1554461432733)
 
 线程创建之后调用start()方法开始运行
 
@@ -69,7 +69,7 @@
 
 - **当线程进入到synchronized方法或者synchronized代码块时，线程切换到的是BLOCKED状态，而使用java.util.concurrent.locks下lock进行加锁的时候线程切换的是WAITING或者TIMED_WAITING状态，因为lock会调用LockSupport的方法。**
 
-![JAVAçº¿ç¨çç¶æ](C:\Users\17646\Desktop\简历内容\assets\163159bceb956cb4-1554461432778)
+![JAVAçº¿ç¨çç¶æ](./assets/163159bceb956cb4-1554461432778)
 
 ## 2、线程中常见函数
 
