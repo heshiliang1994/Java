@@ -297,7 +297,7 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 put方法的代码量有点长，我们按照上面的分解的步骤一步步来看。**从整体而言，为了解决线程安全的问题，ConcurrentHashMap使用了synchronzied和CAS的方式**。在之前了解过HashMap以及1.8版本之前的ConcurrenHashMap都应该知道ConcurrentHashMap结构图，。
 
-![ConcurrentHashMapæ£åæ¡¶æ°ç"ç"æç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\163344e982f9eed4)
+![ConcurrentHashMapæ£åæ¡¶æ°ç"ç"æç¤ºæå¾](assets\163344e982f9eed4)
 
 ConcurrentHashMap是一个哈希桶数组，如果不出现哈希冲突的时候，每个元素均匀的分布在哈希桶数组中。当出现哈希冲突的时候，是**标准的链地址的解决方式**，将hash值相同的节点构成链表的形式，称为“拉链法”，另外，在1.8版本中为了防止拉链过长，当链表的长度大于8的时候会将链表转换成红黑树。table数组中的每个元素实际上是单链表的头结点或者红黑树的根节点。当插入键值对时首先应该定位到要插入的桶，即插入table数组的索引i处。那么，怎样计算得出索引i呢？当然是根据key的hashCode值。
 
@@ -501,7 +501,7 @@ private final void transfer(Node<K,V>[] tab, Node<K,V>[] nextTab) {
 3. 如果这个位置是TreeBin节点（fh<0），也做一个反序处理，并且判断是否需要untreefi，把处理的结果分别放在nextTable的i和i+n的位置上
 4. 遍历过所有的节点以后就完成了复制工作，这时让nextTable作为新的table，并且更新sizeCtl为新容量的0.75倍 ，完成扩容。设置为新容量的0.75倍代码为 `sizeCtl = (n << 1) - (n >>> 1)`，仔细体会下是不是很巧妙，n<<1相当于n右移一位表示n的两倍即2n,n>>>1左右一位相当于n除以2即0.5n,然后两者相减为2n-0.5n=1.5n,是不是刚好等于新容量的0.75倍即2n*0.75=1.5n。最后用一个示意图来进行总结（图片摘自网络）：
 
-![ConcurrentHashMapæ©å®¹ç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\163344e9830954bd)
+![ConcurrentHashMapæ©å®¹ç¤ºæå¾](assets\163344e9830954bd)
 
 ### （6）与size相关的一些方法
 
@@ -751,7 +751,7 @@ head和tail指针会指向一个item域为null的节点,此时ConcurrentLinkedQu
 
 如图，head和tail指向同一个节点Node0，该节点item域为null,next域为null。
 
-![1.ConcurrentLinkedQueueåå§åç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\1633459982863c26)
+![1.ConcurrentLinkedQueueåå§åç¶æ.png](assets\1633459982863c26)
 
 ## 2、操作Node的几个CAS操作
 
@@ -830,11 +830,11 @@ public boolean offer(E e) {
 
 先从单线程执行的角度看起，分析offer 1的过程。第1行代码会对是否为null进行判断，为null的话就直接抛出空指针异常，第2行代码将e包装成一个Node类，第3行为for循环，只有初始化条件没有循环结束条件，这很符合CAS的“套路”，在循环体CAS操作成功会直接return返回，如果CAS操作失败的话就在for循环中不断重试直至成功。这里实例变量t被初始化为tail，p被初始化为t即tail。为了方便下面的理解，p被认为队列真正的尾节点，tail不一定指向对象真正的尾节点，因为在ConcurrentLinkedQueue中tail是被延迟更新的，具体原因我们慢慢来看。代码走到第3行的时候，t和p都分别指向初始化时创建的item域为null，next域为null的Node0。第4行变量q被赋值为null，第5行if判断为true，在第7行使用casNext将插入的Node设置成当前队列尾节点p的next节点，如果CAS操作失败，此次循环结束在下次循环中进行重试。CAS操作成功走到第8行，此时p==t，if判断为false,直接return true返回。如果成功插入1的话，此时ConcurrentLinkedQueue的状态如下图所示：
 
-![2.offer 1åéåçç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\16334599829805e7)
+![2.offer 1åéåçç¶æ.png](assets\16334599829805e7)
 
 多线程（多个线程offer）：
 
-![5.çº¿ç¨Aåçº¿ç¨Bæå¯è½çæ§è¡æ¶åº.png](C:\Users\17646\Desktop\简历内容\assets\16334599933a4aab)
+![5.çº¿ç¨Aåçº¿ç¨Bæå¯è½çæ§è¡æ¶åº.png](assets\16334599933a4aab)
 
 如图，假设线程A此时读取了变量t，线程B刚好在这个时候offer一个Node后，此时会修改tail指针,那么这个时候线程A再次执行t=tail时t会指向另外一个节点，很显然线程A前后两次读取的变量t指向的节点不相同，即`t != (t = tail)`为true,并且由于t指向节点的变化`p != t`也为true，此时该行代码的执行结果为p和t最新的t指针指向了同一个节点，并且此时t也是队列真正的对尾节点。那么，现在已经定位到队列真正的队尾节点，就可以执行offer操作了。
 
@@ -874,11 +874,11 @@ public E poll() {
 
 **从单线程角度：**
 
-![6.éååå§ç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\16334599936bd919)
+![6.éååå§ç¶æ.png](assets\16334599936bd919)
 
 我们还是先将变量p作为队列要删除真正的队头节点，h（head）指向的节点并不一定是队列的队头节点。先来看poll出Node1时的情况，由于p=h=head，参照上图，很显然此时p指向的Node1的数据域不为null,在第4行代码中item!=null判断为true后接下来通过casItem将Node1的数据域设置为null。如果CAS设置失败则此次循环结束等待下一次循环进行重试。若第4行执行成功进入到第5行代码，此时p和h都指向Node1,第5行if判断为false,然后直接到第7行return回Node1的数据域1，方法运行结束，此时的队列状态如下图。
 
-![7.éååºéæä½åçç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\163345999f3d68bb)
+![7.éååºéæä½åçç¶æ.png](assets\163345999f3d68bb)
 
 下面继续从队列中poll，很显然当前h和p指向的Node1的数据域为null，那么第一件事就是要**定位准备删除的队头节点(找到数据域不为null的节点)**。
 
@@ -886,7 +886,7 @@ public E poll() {
 
 继续看，第三行代码item为null,第4行代码if判断为false,走到第8行代码（q = p.next）if也为false，由于q指向了Node2,在第11行的if判断也为false，因此代码走到了第13行，这个时候p和q共同指向了Node2,也就找到了要删除的真正的队头节点。可以总结出，定位待删除的队头节点的过程为：如果当前节点的数据域为null，很显然该节点不是待删除的节点，就用当前节点的下一个节点去试探。在经过第一次循环后，此时状态图为下图：
 
-![8.ç"è¿ä¸æ¬¡å¾ªç¯åçç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\16334599bd85583b)
+![8.ç"è¿ä¸æ¬¡å¾ªç¯åçç¶æ.png](assets\16334599bd85583b)
 
 进行下一次循环，第4行的操作同上述，当前假设第4行中casItem设置成功，由于p已经指向了Node2,而h还依旧指向Node1,此时第5行的if判断为true，然后执行updateHead(h, ((q = p.next) != null) ? q : p)，此时q指向的Node3，所有传入updateHead方法的分别是指向Node1的h引用和指向Node3的q引用。updateHead方法的源码为：
 
@@ -899,7 +899,7 @@ final void updateHead(Node<E> h, Node<E> p) {
 
 该方法主要是通过casHead将队列的head指向Node3,并且通过 h.lazySetNext将Node1的next域指向它自己。最后在第7行代码中返回Node2的值。此时队列的状态如下图所示：
 
-![9.Node2ä"éåä¸­åºéåçç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\16334599be78fdde)
+![9.Node2ä"éåä¸­åºéåçç¶æ.png](assets\16334599be78fdde)
 
 Node1的next域指向它自己，head指向了Node3。如果队列为空队列的话，就会执行到代码的第8行(q = p.next) == null，if判断为true,因此在第10行中直接返回null。以上的分析是从单线程执行的角度去看，也可以让我们了解poll的整体思路，现在来做一个总结：
 
@@ -948,15 +948,15 @@ offer->poll->offer
 
 在offer方法的第11行代码`if (p == q)`，能够让if判断为true的情况为p指向的节点为**哨兵节点**，而什么时候会构造哨兵节点呢？在对poll方法的讨论中，我们已经找到了答案，即**当head指向的节点的item域为null时会寻找真正的队头节点，等到待插入的节点插入之后，会更新head，并且将原来head指向的节点设置为哨兵节点。**假设队列初始状态如下图所示：
 
-![10.offeråpollç¸äºå½±ååææ¶éååå§ç¶æ.png](C:\Users\17646\Desktop\简历内容\assets\16334599c2390c2b)
+![10.offeråpollç¸äºå½±ååææ¶éååå§ç¶æ.png](assets\16334599c2390c2b)
 
 因此在线程A执行offer时，线程B执行poll就会存在如下一种情况：
 
-![11.çº¿ç¨Aåçº¿ç¨Bå¯è½å­å¨çæ§è¡æ¶åº.png](C:\Users\17646\Desktop\简历内容\assets\16334599cd4cbdab)
+![11.çº¿ç¨Aåçº¿ç¨Bå¯è½å­å¨çæ§è¡æ¶åº.png](assets\16334599cd4cbdab)
 
 如图，线程A的tail节点存在next节点Node1,因此会通过引用q往前寻找队列真正的队尾节点，当执行到判断`if (p == q)`时，此时线程B执行poll操作，在对线程B来说，head和p指向Node0,由于Node0的item域为null,同样会往前递进找到队列真正的队头节点Node1,在线程B执行完poll之后，Node0就会转换为**哨兵节点**，也就意味着队列的head发生了改变，此时队列状态为下图。
 
-![12.çº¿ç¨Bè¿è¡pollåéåçç¶æå¾.png](C:\Users\17646\Desktop\简历内容\assets\16334599d7d92981)
+![12.çº¿ç¨Bè¿è¡pollåéåçç¶æå¾.png](assets\16334599d7d92981)
 
 此时线程A在执行判断`if (p == q)`时就为true,会继续执行`p = (t != (t = tail)) ? t : head;`，由于tail指针没有发生改变所以p被赋值为head,重新从head开始完成插入操作。
 
@@ -1289,12 +1289,12 @@ tryTransfer(E e,long timeout,imeUnit unit)：与transfer基本功能一样，只
 
 LinkedBlockingDeque是基于链表数据结构的**有界阻塞双端队列**，如果在创建对象时为指定大小时，其默认大小为Integer.MAX_VALUE。与LinkedBlockingQueue相比，主要的不同点在于，LinkedBlockingDeque具有双端队列的特性。LinkedBlockingDeque基本操作如下图所示（来源于java文档）
 
-![LinkedBlockingDequeçåºæ¬æä½.png](C:\Users\17646\Desktop\简历内容\assets\163349267d1586d2)
+![LinkedBlockingDequeçåºæ¬æä½.png](assets\163349267d1586d2)
 
 如上图所示，LinkedBlockingDeque的基本操作可以分为四种类型：1.特殊情况，抛出异常；2.特殊情况，返回特殊值如null或者false；3.当线程不满足操作条件时，线程会被阻塞直至条件满足；4. 操作具有超时特性。
 另外，LinkedBlockingDeque实现了BlockingDueue接口而LinkedBlockingQueue实现的是BlockingQueue，这两个接口的主要区别如下图所示（来源于java文档）：
 
-![BlockingQueueåBlockingDequeçåºå".png](C:\Users\17646\Desktop\简历内容\assets\163349267d5efe67)
+![BlockingQueueåBlockingDequeçåºå".png](assets\163349267d5efe67)
 
 从上图可以看出，两个接口的功能是可以等价使用的，比如BlockingQueue的add方法和BlockingDeque的addLast方法的功能是一样的。
 

@@ -57,7 +57,7 @@
 
 （5）Java中线程状态转换
 
-![çº¿ç¨ç¶æè½¬æ¢å¾](C:\Users\17646\Desktop\简历内容\assets\163159b8a740b329-1554461432733)
+![çº¿ç¨ç¶æè½¬æ¢å¾](assets\163159b8a740b329-1554461432733)
 
 线程创建之后调用start()方法开始运行
 
@@ -69,7 +69,7 @@
 
 - **当线程进入到synchronized方法或者synchronized代码块时，线程切换到的是BLOCKED状态，而使用java.util.concurrent.locks下lock进行加锁的时候线程切换的是WAITING或者TIMED_WAITING状态，因为lock会调用LockSupport的方法。**
 
-![JAVAçº¿ç¨çç¶æ](C:\Users\17646\Desktop\简历内容\assets\163159bceb956cb4-1554461432778)
+![JAVAçº¿ç¨çç¶æ](assets\163159bceb956cb4-1554461432778)
 
 ## 2、线程中常见函数
 
@@ -368,7 +368,7 @@ public class ThreadExceptionTest {
 
 现在让我们来看看，重排序是否会改变多线程程序的执行结果。请看下面的示例代码。
 
-![1555144868147](C:\Users\17646\Desktop\简历内容\assets\1555144868147.png)
+![1555144868147](assets\1555144868147.png)
 
 flag变量是个标记，用来标识变量a是否已被写入。这里假设有两个线程A和B，A首先执行 writer()方法，随后B线程接着执行reader()方法。线程B在执行操作4时，能否看到线程A在操作 1对共享变量a的写入呢？
 
@@ -376,13 +376,13 @@ flag变量是个标记，用来标识变量a是否已被写入。这里假设有
 
 由于操作1和操作2没有数据依赖关系，编译器和处理器可以对这两个操作重排序；同样， 操作3和操作4没有数据依赖关系，编译器和处理器也可以对这两个操作重排序。让我们先来 看看，当操作1和操作2重排序时，可能会产生什么效果？请看下面的程序执行时序图，如图38所示。
 
-![1555144944785](C:\Users\17646\Desktop\简历内容\assets\1555144944785.png)
+![1555144944785](assets\1555144944785.png)
 
 如图3-8所示，操作1和操作2做了重排序。程序执行时，线程A首先写标记变量flag，随后线 程B读这个变量。由于条件判断为真，线程B将读取变量a。此时，变量a还没有被线程A写入，在这里多线程程序的语义被重排序破坏了！
 
 下面再让我们看看，当操作3和操作4重排序时会产生什么效果（借助这个重排序，可以顺 便说明控制依赖性）。下面是操作3和操作4重排序后，程序执行的时序图，如图3-9所示。
 
-![1555146370437](C:\Users\17646\Desktop\简历内容\assets\1555146370437.png)
+![1555146370437](assets\1555146370437.png)
 
 在程序中，操作3和操作4存在控制依赖关系。当代码中存在控制依赖性时，会影响指令序 列执行的并行度。为此，编译器和处理器会采用猜测（Speculation）执行来克服控制相关性对并 行度的影响。以处理器的猜测执行为例，执行线程B的处理器可以提前读取并计算a*a，然后把 计算结果临时保存到一个名为重排序缓冲（Reorder Buffer，ROB）的硬件缓存中。当操作3的条 件判断为真时，就把该计算结果写入变量i中。
 
@@ -566,7 +566,7 @@ public class Singleton {
 
 这条语句实际上包含了三个操作：1.分配对象的内存空间；2.初始化对象；3.设置instance指向刚分配的内存地址，但是由于存在重排的问题，可能有以下的执行顺序：
 
-![ä¸å volatileå¯è½çæ§è¡æ¶åº](C:\Users\17646\Desktop\简历内容\assets\1632600e7b66b892-1554461433557)
+![ä¸å volatileå¯è½çæ§è¡æ¶åº](assets\1632600e7b66b892-1554461433557)
 
 如果没有2和3的重排，线程B进行判断if(instance == null)时就会为true，而实际上这个instance并没有初始化成功，显而易见对线程B来说之后的操作就会是错的。而用volatile修饰的话，就可以禁止2和3操作重排，从而避免这种情况。
 
@@ -584,20 +584,20 @@ public class Singleton {
 
 处理器和内存之间加入了高速缓存，L0、L1、L3缓存等
 
-![image-20200408213847606](C:\Users\17646\Desktop\简历内容\java并发编程.assets\image-20200408213847606.png)
+![image-20200408213847606](java并发编程.assets\image-20200408213847606.png)
 
 简化后的模型如下图：
 
 https://juejin.im/post/5dbfa0aa51882538ce1a4ebc
 
-![JMM](C:\Users\17646\Desktop\简历内容\java并发编程.assets\computer.jpg)
+![JMM](java并发编程.assets\computer.jpg)
 
 将运算需要使用到的数据复制到缓存中，让运算能够快速进行。当运算完成之后，再将缓存中的结果写入主内存，这样运算器就不用等待主内存的读写操作了。每个处理器都有自己的高速缓存，同时又共同操作同一块主内存，当多个处理器同时操作主内存时，可能导致数据不一致，因此需要“缓存一致性协议”来保障。比如，MSI、MESI等。
 
 Java内存模型即Java Memory Model，简称JMM。用来屏蔽掉各种硬件和操作系统的内存访问差异，以实现让Java程序在各平台下都能够达到一致的内存访问效果。JMM定义了线程和主内存之间的抽象关系：**线程之间的共享变量存储在主内存**（main memory）中，**每个线程都有一个私有的本地内存**（local memory），**本地内存中存储了该线程以读/写共享变量的副本**。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存，写缓冲区，寄存器以及其他的硬件和编译器优化。
 
 
-![JMM](C:\Users\17646\Desktop\简历内容\java并发编程.assets\jmm-1.jpg)
+![JMM](java并发编程.assets\jmm-1.jpg)
 
 主内存：主要存储的是Java实例对象，所有线程创建的实例对象都存放在主内存中，不管该实例对象是成员变量还是方法中的本地变量(也称局部变量)，当然也包括了共享的类信息、常量、静态变量。共享数据区域，多条线程对同一个变量进行访问可能会出现线程安全问题。
 
@@ -688,7 +688,7 @@ volatile读的内存语义：当读一个volatile变量时，JMM会把该线程�
 - 线程B读一个volatile变量，实际上是线程B接收了之前某个线程发出的（在写这个volatile变量之前对共享变量所做修改的）消息。
 - 线程A写一个volatile变量，随后线程B读这个volatile变量，这个过程实质上是线程A通过主内存向线程B发送消息。
 
-![1554968464028](C:\Users\17646\Desktop\简历内容\assets\1554968464028.png)
+![1554968464028](assets\1554968464028.png)
 
 ### （6）volatile的内存语义实现（四种屏障）
 
@@ -696,11 +696,11 @@ volatile读的内存语义：当读一个volatile变量时，JMM会把该线程�
 
 JMM内存屏障分为以下四类：
 
-![åå­å±éåç±"è¡¨](C:\Users\17646\Desktop\简历内容\assets\16320e796e1471c0-1554461433558)
+![åå­å±éåç±"è¡¨](assets\16320e796e1471c0-1554461433558)
 
 Java编译器会在生成指令序列时在适当的位置会插入内存屏障指令来禁止特定类型的树立起重排序。为了实现volatile的内存语义，JMM会限制特定类型的编译器和处理器重排序，JMM会针对编译器制定volatile重排序规则表：
 
-![volatileéæåºè§åè¡¨](C:\Users\17646\Desktop\简历内容\assets\16320e796e2f06da-1554461433558)
+![volatileéæåºè§åè¡¨](assets\16320e796e2f06da-1554461433558)
 
 举例来说，第三行最后一个单元格的意思是：在程序中，当第一个操作为普通变量的读或写时，如果第二个操作为volatile写，则编译器不能重排序这两个操作。
 
@@ -721,7 +721,7 @@ Java编译器会在生成指令序列时在适当的位置会插入内存屏障�
 
 下面是保守策略下，volatile写插入内存屏障后生成的指令序列示意图：
 
-![1554968572291](C:\Users\17646\Desktop\简历内容\assets\1554968572291.png)
+![1554968572291](assets\1554968572291.png)
 
 StoreStore屏障保证在volatile写之前，其前面的所有普通写操作都已经对任意处理器可见了。这是因为StoreStore屏障将保证上面的所有的普通写在volatile写之前已经刷新到主内存。
 
@@ -729,15 +729,15 @@ volatile写后面的StoreLoad屏障的作用是避免volatile写与后面可能�
 
 在保守策略下，volatile读插入内存屏障后生成的指令序列示意图：
 
-![](C:\Users\17646\Desktop\简历内容\Java知识储备\0.volatile读插入内存屏障后生成的指令序列示意图.png)
+![](Java知识储备\0.volatile读插入内存屏障后生成的指令序列示意图.png)
 
 LoadLoad屏障用来禁止处理器把上面的volatile读与下面的普通读重排序。LoadStore屏障用来禁止处理器把上面的volatile读与下面的普通写重排序。
 
 上述volatile写和volatile读的内存屏障插入策略非常保守。在实际执行时，只要不改变volatile写-读的内存语义，编译器可以根据具体情况省略不必要的屏障。
 
-![](C:\Users\17646\Desktop\简历内容\assets\0.volatile示例.png)
+![](assets\0.volatile示例.png)
 
-![](C:\Users\17646\Desktop\简历内容\assets\0.volatile示例指令序列.png)
+![](assets\0.volatile示例指令序列.png)
 
 注意，最后的StoreLoad屏障不能省略。因为第二个volatile写之后，方法立即return。此时编译器可能无法准确断定后面是否会有volatile读或写，为了安全起见，编译器通常会在这里插入一个StoreLoad屏障。
 
@@ -770,7 +770,7 @@ Java关键字synchronized就具有使每个线程依次排队操作共享变量�
 
 synchronized可以使用在代码块和方法中，根据synchronized用的位置可以有这些使用场景：
 
-![Synchronizedçä½¿ç¨åºæ¯](C:\Users\17646\Desktop\简历内容\assets\16315cc79aaac173-1554461433559)
+![Synchronizedçä½¿ç¨åºæ¯](assets\16315cc79aaac173-1554461433559)
 
 如果锁的是类对象的话，尽管new多个实例对象，但他们仍然是属于同一个类依然会被锁住，即线程之间保证同步关系。synchronized锁住的对象不同，影响的范围也会存在差别。
 
@@ -808,7 +808,7 @@ synchronized使用的锁都放在对象头里，JVM中使用2个字节宽来存�
 
 由于对象需要存储的运行时数据过多，Mark Word被设计成一个非固定的数据结构以便在极小的空间内存储更多的信息。Java SE 1.6中，锁一共有4种状态，基本从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态，这几个状态会随着竞争情况逐渐升级。**锁可以升级但不可能降级，意味着偏向锁升级成轻量级锁后不能降级成偏向锁**。这种锁升级却不能降级的策略，目的是为了提高获得锁和释放锁的效率。在不同的状态下，Mark Word会存储不同的内容，32位JVM Mark Word默认存储结构为。
 
-![image-20200410142942038](C:\Users\17646\Desktop\简历内容\java并发编程.assets\image-20200410142942038.png)
+![image-20200410142942038](java并发编程.assets\image-20200410142942038.png)
 
 synchronized 代码块是由一对 **monitorenter/moniterexit** 字节码指令实现， monitor 是其同步实现的基础， Java SE1.6 为了改善性能， 使得 JVM 会根据竞争情况， 使用如下 3 种不同的锁机制：
 
@@ -840,13 +840,13 @@ ObjectMonitor() {
 }
 ```
 
-![img](C:\Users\17646\Desktop\简历内容\java并发编程.assets\16550b6dc6ceb40d)
+![img](java并发编程.assets\16550b6dc6ceb40d)
 
 其中有两个队列\_EntryList和\_WaitSet，它们用来保存ObjectMonitor对象列表，\_owner指向持有ObjectMonitor对象的线程。当多个线程访问同步代码时，线程会进入\_EntryList区，当线程获取对象的monitor后（对于线程获得锁的优先级，还有待考究），进入\_owner区并且将\_owner指向获得锁的线程（monitor对象被线程持有），\_count++，其他线程则继续在\_EntryList区等待。若线程调用wait方法，则该线程进入\_WaitSet区等待被唤醒。线程执行完释放monitor锁并且对ObjectMonitor中的值进行复位。
 
 Wait Set保存的是成功获取synchronized之后调用wait方法进入等待的线程集合，Entry Set是尝试首次获取monitor的线程集合。当一个线程释放监视器时，**在入口区和等待区的等待线程都会去竞争监视器**，如果入口区的线程赢了，会从2号门进入；如果等待区的线程赢了会从4号门进入。**只有通过3号门才能进入等待区，在等待区中的线程只有通过4号门才能退出等待区**，也就是说一个线程只有在持有监视器时才能执行wait操作，处于等待的线程只有再次获得监视器才能退出等待状态。
 
-### （2）synch当ronized是如何实现的
+### （2）synchronized是如何实现的
 
 ```Java
 public class SynchronizedDemo {
@@ -863,11 +863,11 @@ public class SynchronizedDemo {
 
 上面的代码中用了一个同步代码块，锁住的是类对象，并且还有一个同步静态方法，锁住的依然是该类的类对象。编译后，切换到SynchronizedDemo.class的同级目录之后，然后用javap -v SynchronizedDemo.class查看字节码文件：
 
-![SynchronizedDemo.class](C:\Users\17646\Desktop\简历内容\assets\16315cce259af0d2-1554461433560)
+![SynchronizedDemo.class](assets\16315cce259af0d2-1554461433560)
 
 如图，上面用黄色高亮的部分就是需要注意的部分了，这也是添synchronized关键字之后独有的**。执行同步代码块后首先执行monitorenter指令，退出的时候monitorexit指令。通过分析之后可以看出，使用synchronized进行同步，其关键就是必须要对对象的监视器monitor进行获取，当线程获取monitor后才能继续往下执行，否则就只能等待。**而这个获取过程是互斥的，即同一时刻只能有一个线程能够获取到monitor。上面的demo中在执行同步代码之后紧接着再会去执行一个静态同步方法，而这个方法锁的对象依然就是这个类对象，那么这个正在执行的线程还需要获取该锁吗？答案是不必要，从上图可以看出，执行静态方法的时候只有一条monitorexit指令，并没有monitorenter获取锁的指令。**这就是锁的重入性**，即在同一锁程中，线程不需要再次获取同一把锁。**synchronized先天具有重入性**。对每个对象拥有一个计数器，当线程获取该对象锁后，计数器就会加一，释放锁后就会将计数器减一。任意一个对象都拥有自己的监视器，当这个对象由同步块或者这个对象的同步方法调用时，执行方法的线程必须先获取该对象的监视器才能进入同步块和同步方法，如果没有获取到监视器的线程将会被阻塞在同步块和同步方法的入口处，进入到BLOCKED状态，当Object的监视器占有者释放后，在同步队列中的线程就会有机会重新获得该监视器。
 
-![å¯¹è±¡ï¼å¯¹è±¡çè§å¨ï¼åæ­¥éååçº¿ç¨ç¶æçå³ç³"](C:\Users\17646\Desktop\简历内容\assets\16315cd5fa7cf91c-1554461433560)
+![å¯¹è±¡ï¼å¯¹è±¡çè§å¨ï¼åæ­¥éååçº¿ç¨ç¶æçå³ç³"](assets\16315cd5fa7cf91c-1554461433560)
 
 ### （3）synchronized和lock之间关系
 
@@ -970,7 +970,7 @@ public class MonitorDemo {
 }
 ```
 
-![synchronizedçhappens-beforeå³ç³"](C:\Users\17646\Desktop\简历内容\assets\16315ce6ea84f240-1554461433561)
+![synchronizedçhappens-beforeå³ç³"](assets\16315ce6ea84f240-1554461433561)
 
 图中的每一个箭头连接的两个节点就代表之间的happens-before关系，黑色的是通过顺序规则推导出来，红色的为监视器锁规则推导而出：线程A释放锁happens-before线程B加锁，蓝色的则是通过程序顺序规则和监视器锁规则推测出来happens-before关系，通过传递性规则进一步推导的happens-before关系。
 
@@ -982,7 +982,7 @@ public class MonitorDemo {
 
 从上图可以看出，线程A首先会从主内存中读取共享变量a=0的值，然后将该变量拷贝到自己的本地内存，进行加一操作后，再将该值刷新到主内存，整个过程即为“**线程A加锁->执行临界区代码->释放锁**”对一个的内存语义。
 
-![çº¿ç¨Bè¯"å±äº"åé](C:\Users\17646\Desktop\简历内容\assets\16315cf41661491e-1554461433562)
+![çº¿ç¨Bè¯"å±äº"åé](assets\16315cf41661491e-1554461433562)
 
 线程B获取锁的时候会进行上述相同的操作过程。从整体上来看，线程A的执行结果（a=1）对线程B是可见的，实现原理为：**释放锁的时候会将值刷新到主内存中，其他线程获取锁时会强制从主内存中获取最新的值**。另外也验证了2 happens-before 5，2的执行结果对5是可见的。
 
@@ -1002,15 +1002,15 @@ HotSpot的作者经过研究发现，大多数情况下，锁不仅不存在多�
 
 当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储偏向的线程ID，以后该线程在进入和退出同步块时不需要进行CAS操作来加锁和解锁。只需要简单地测试一下对象头的Mark Word是否存储着指向当前线程的偏向锁。如果测试成功，表示线程已经获得了锁。如果测试失败，则需要再测试一下Mark Word中偏向锁的标识是否设置成1（表示当前是偏向锁）：如果没有设置，则使用CAS竞争锁；如果设置了，则尝试使用CAS将对象头的偏向锁指向当前线程。
 
-![è¿éåå¾çæè¿°](C:\Users\17646\Desktop\简历内容\assets\20180813172337726-1554461433773.jpg)
+![è¿éåå¾çæè¿°](assets\20180813172337726-1554461433773.jpg)
 
 #### 2）偏向锁的撤销
 
 偏向锁使用了一种**等到竞争出现才释放锁**的机制，所以当其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁。偏向锁的撤销，需要等待全局安全点（在这个时间点上没有正在执行的字节码）。它会首先暂时拥有偏向锁的线程，然后检查持有偏向锁的线程是否或者，如果线程处于不活动状态，则将对象头设置成无锁状态；如果线程仍然或者，拥有偏向锁的栈会被执行，遍历偏向对象的锁记录，栈中的锁记录和对象头的Mark Word要么重新偏向于其他线程，要么恢复到无锁或者标记对象不合适作为偏向锁，最后唤醒暂停的线程。
 
-![ååéæ¤éæµç¨](C:\Users\17646\Desktop\简历内容\assets\16315d0b13b37da4-1554461433373)
+![ååéæ¤éæµç¨](assets\16315d0b13b37da4-1554461433373)
 
-![ååéè·ååæ¤éæµç¨](C:\Users\17646\Desktop\简历内容\assets\16315cb9175365f5-1554461433388)
+![ååéè·ååæ¤éæµç¨](assets\16315cb9175365f5-1554461433388)
 
 如何关闭偏向锁？偏向锁在Java 6和Java 7里是默认启用的，但他在应用程序启动几秒钟之后才激活，如果有必要可以使用JVM参数来关闭延迟：-XX:BiasedLockingStartupDelay=0。如果你确定应用程序里所有的锁通常情况下处于竞争状态，可以通过JVM参数关闭偏向锁：-XX:-UseBiasedLocking=false，那么程序默认会进入轻量级锁状态。
 
@@ -1020,7 +1020,7 @@ HotSpot的作者经过研究发现，大多数情况下，锁不仅不存在多�
 
 2）解锁：轻量级解锁时，会使用原子的CAS操作将Displaced Mark Word替换回到对象头，如果成功，则表示没有竞争发生。如果失败，表示当前锁存在竞争，锁就会膨胀成重量级锁。下图是两个线程同时争夺锁，导致锁膨胀的流程图。
 
-![è½"éçº§éå éè§£éä"¥åéè¨è](C:\Users\17646\Desktop\简历内容\assets\16315cb9193719c2-1554461433441)
+![è½"éçº§éå éè§£éä"¥åéè¨è](assets\16315cb9193719c2-1554461433441)
 
 自旋会消耗CPU，为了避免无用的自旋（比如获得锁的线程被阻塞住了），一旦锁升级成重量级锁，就不会再恢复到轻量级锁状态。当锁处于这个状态下，其他线程视图获取锁时，都会被阻塞住，当持有锁的线程释放锁之后会缓刑这些线程，被唤醒的线程就会进行新一轮的夺锁之争。
 
@@ -1084,6 +1084,8 @@ Condition newCondition();// 获取与lock绑定的等待通知组件，当前线
 
 实现线程安全有两种方法：互斥同步和非阻塞同步。互斥同步在编程上采用synchronized关键字来进行同步，但是由于互斥同步在多线程并发的情况下存在线程阻塞、唤醒以及用户态和内核态之间的切换引起的性能问题。从处理方式上来说，互斥同步属于一种**悲观锁策略**，即假设每一次执行临界区代码都会产生冲突，所以当线程获取到锁的时候同时也会阻塞其他线程获得该锁。而CAS操作（又称为无锁操作）是一种**乐观锁策略**，它假设所有线程访问公共资源的时候不会出现冲突，既然不会出现冲突自然而然就不会阻塞其他线程的操作。因此线程就不会出现阻塞停顿的状态。那么，如果出现冲突了怎么办？无锁操作是使用CAS（compare and swap）又叫做比较交换来鉴别线程是否出现冲突，出现冲突就重试当前操作直到没有冲突为止。
 
+> 乐观锁：主要应用在写比较少的场景
+
 #### 1）CAS操作过程
 
 CAS比较交换的过程可以通俗的理解为CAS (V, O, N)，包含三个值分别为：V 内存地址存放的实际值；O 预期的值（旧值）；N 更新的新值。当多个线程使用CAS操作一个变量时，只有一个线程会成功，并成功更新，其余会失败。失败的线程会重新尝试，当然可以选择挂起线程。
@@ -1108,6 +1110,8 @@ CAS比较交换的过程可以通俗的理解为CAS (V, O, N)，包含三个值�
 - 自旋时间过长：使用CAS时非阻塞同步，也就是说不会将线程挂起，会自旋（无非就是一个死循环）进行下一次尝试，如果这里自旋时间过长对性能是很大的消耗。如果JVM能支持处理器提供的pause指令，那么在效率上会有一定的提升。
 - 只能保证一个共享变量的原子操作：当一个共享变量执行操作是CAS能保证其原子性，如果对多个共享进行操作，CAS就不能保证其原子性。有一个解决方案是利用对象整合多个共享变量，即一个类中的成员变量就是这几个共享变量。然后将这个对象做CAS操作就可以保证其原子性。atomic中提供了AtomicReference来保证引用对象之间的原子性。
 
+> ⚠️ 思考：ThreadPoolExecutor 为何会使用一个变量 ctl 来表达线程池的状态和worker数量？
+
 ### （3）AQS（Abstract Queued Synchronizer，队列同步器）
 
 **同步器是用来构建锁和其他同步组件的基础框架**，它的实现主要依赖一个int成员变量来表示同步状态以及通过一个FIFO队列构成等待队列。它的子类必须重写AQS的几个protected修饰的用来改变同步状态的方法，其他方法主要是实现了排队和阻塞机制。状态的更新使用getState、setState以及compareAndState这三个方法，它们能够保证状态的改变是安全的。子类推荐被定义为自定义同步组件的静态内部类，同步器自身没有实现任何同步接口，它仅仅是定义了若干同步状态的获取和释放方法来供自定义同步组件使用，同步器既可以支持独占式地获取同步状态，也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件（ReentrantLock、ReentrantReadWriteLock和CountDownLatch等）。
@@ -1116,7 +1120,7 @@ CAS比较交换的过程可以通俗的理解为CAS (V, O, N)，包含三个值�
 
 #### 1）AQS的模板方法设计模式
 
-AQS的设计是使用模板方法设计模式，它将一些方法开放给子类进行重写，而同步器给同步组件所提供模板方法又会重新调用被子类所重写的方法。举个例子，AQS中需要重写的方法tryAcquire:
+AQS的设计是使用**模板方法设计模式**，它将一些方法开放给子类进行重写，而同步器给同步组件所提供模板方法又会重新调用被子类所重写的方法。举个例子，AQS中需要重写的方法tryAcquire:
 
 ```Java
 protected boolean tryAcquire(int arg){
@@ -1152,11 +1156,11 @@ tryAcquire()中会调用compareAndSetState()方法，在后者中使用CAS操作
 
 AQS可重写的方法如下图：
 
-![AQSå¯éåçæ¹æ³.png](C:\Users\17646\Desktop\简历内容\assets\163260cff7d16b38-1554461432874)
+![AQSå¯éåçæ¹æ³.png](assets\163260cff7d16b38-1554461432874)
 
 在实现同步组件是AQS提供的模板方法如下图：
 
-![AQSæä¾çæ¨¡æ¿æ¹æ³.png](C:\Users\17646\Desktop\简历内容\assets\163260cff87fe8bf-1554461432944)
+![AQSæä¾çæ¨¡æ¿æ¹æ³.png](assets\163260cff87fe8bf-1554461432944)
 
 AQS提供的模板方法可以分为3类：
 
@@ -1241,7 +1245,7 @@ AQS中包含的属性及其含义：
 
 同步队列是一个由双向链表构成的双向队列，它是用来存储等待获取锁的线程，其结构如下图：
 
-![éåç¤ºæå¾.png](C:\Users\17646\Desktop\简历内容\assets\163261637bb25796-1554461433114)
+![éåç¤ºæå¾.png](assets\163261637bb25796-1554461433114)
 
 - 入队和出队对应着锁的获取和释放两个操作：获取锁失败进行入队操作，获取锁成功进行出队操作。
 - 队列中的Node对应的线程状态通过LockSupport.park()方法进入waiting状态
@@ -1436,7 +1440,7 @@ private final boolean parkAndCheckInterrupt() {
 - 如果当前节点的前驱节点是头结点，并且能够获得同步状态的话，当前线程能够获得锁，该方法执行结束退出
 - 获取锁失败的话，先将节点状态设置成SIGNAL，然后调用LockSupport.park方法使得当前线程阻塞。
 
-![ç¬å å¼éè·åï¼acquire(C:\Users\17646\Desktop\简历内容\assets\163261637c891cc2-1554461433115)æ¹æ³ï¼æµç¨å¾.png](https://user-gold-cdn.xitu.io/2018/5/3/163261637c891cc2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![ç¬å å¼éè·åï¼acquire(assets\163261637c891cc2-1554461433115)æ¹æ³ï¼æµç¨å¾.png](https://user-gold-cdn.xitu.io/2018/5/3/163261637c891cc2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 ##### ② 独占锁的释放（release()方法）
 
@@ -1594,7 +1598,7 @@ private boolean doAcquireNanos(int arg, long nanosTimeout) throws InterruptedExc
 }
 ```
 
-![è¶æ¶ç­å¾å¼è·åéï¼doAcquireNanos(C:\Users\17646\Desktop\简历内容\assets\163261637d087f5e-1554461433281)æ¹æ³ï¼](https://user-gold-cdn.xitu.io/2018/5/3/163261637d087f5e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![è¶æ¶ç­å¾å¼è·åéï¼doAcquireNanos(assets\163261637d087f5e-1554461433281)æ¹æ³ï¼](https://user-gold-cdn.xitu.io/2018/5/3/163261637d087f5e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 LockSupport.parkNanos使得当前线程阻塞，同时在3.4步增加了对中断的检测，若检测出被中断直接抛出被中断异常。
 
@@ -1725,9 +1729,9 @@ private void doReleaseShared() {
 
 **可中断的意思是线程对应的节点的状态被设置为CANCELLED，在从AQS队列中唤醒的过程中将被跳过。**
 
-![1557568212841](C:\Users\17646\Desktop\简历内容\assets\1557568212841.png)
+![1557568212841](assets\1557568212841.png)
 
-![1557569220959](C:\Users\17646\Desktop\简历内容\assets\1557569220959.png)
+![1557569220959](assets\1557569220959.png)
 
 ### （4）ReentrantLock
 
@@ -2006,7 +2010,7 @@ class RWDictionary {
 
 读写锁需要关注的重点函数为获取读锁及写锁的函数，对于读锁及写锁对象则主要关注加锁和解锁函数，这几个函数及对象关系如下图：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3356096377-5b58800bcda35_articlex-1554461433490.png)
+![img](assets\3356096377-5b58800bcda35_articlex-1554461433490.png)
 
 从图中可见读写锁的加锁解锁操作最终都是调用ReentrantReadWriteLock类的内部类Sync提供的方法。Sync对象通过继承AbstractQueuedSynchronizer进行实现，故后续分析主要基于Sync类进行。
 
@@ -2018,7 +2022,7 @@ Sync、NonfairSync、FairSync、ReadLock、WriteLock
 
 Sync继承于AbstractQueuedSynchronizer，其中主要功能均在AbstractQueuedSynchronizer中完成，其中最重要功能为控制线程获取锁失败后转换为等待状态及在满足一定条件后唤醒等待状态的线程。先对AbstractQueuedSynchronizer进行观察。AbstractQueuedSynchronizer图解：为了更好理解AbstractQueuedSynchronizer的运行机制，可以首先研究其内部数据结构，如下图：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3868270967-5b58800c21220_articlex-1554461432990.png)
+![img](assets\3868270967-5b58800c21220_articlex-1554461432990.png)
 
 图中展示AQS类较为重要的数据结构
 
@@ -2035,7 +2039,7 @@ Sync继承于AbstractQueuedSynchronizer，其中主要功能均在AbstractQueued
 实现读写锁与实现普通互斥锁的主要区别在于需要分别记录读锁状态及写锁状态，并且等待队列中需要区别处理两种加锁操作。 
 Sync使用state变量同时记录读锁与写锁状态，将int类型的state变量分为高16位与低16位，高16位记录读锁状态，低16位记录写锁状态，如下图所示：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3877233723-5b58800addacf_articlex-1554461433993.png)
+![img](assets\3877233723-5b58800addacf_articlex-1554461433993.png)
 
 Sync使用不同的mode描述等待队列中的节点以区分读锁等待节点和写锁等待节点。mode取值包括SHARED及EXCLUSIVE两种，分别代表当前等待节点为读锁和写锁。
 
@@ -2077,7 +2081,7 @@ public final void acquire(int arg) {
 
 无锁状态AQS内部数据状态如下图：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\2513088112-5b58800b78a6c_articlex-1554461433994.png)
+![img](assets\2513088112-5b58800b78a6c_articlex-1554461433994.png)
 
 其中state变量为0，表示高位低位均为0，没有任何锁，且等待节点的首尾均指向空（此处特指head节点没有初始化时），锁的所有者线程也为空。
 
@@ -2085,7 +2089,7 @@ public final void acquire(int arg) {
 
 在无锁状态进行加锁操作，线程调用acquire 函数，首先使用tryAcquire函数判断锁是否可获取成功，由于当前是无锁状态必然成功获取锁（如果多个线程同时进入此函数，则有且只有一个线程可调用compareAndSetState成功，其他线程转入获取锁失败的流程）。获取锁成功后AQS状态为：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\1886151432-5b58800ad557b_articlex-1554461434075.png)
+![img](assets\1886151432-5b58800ad557b_articlex-1554461434075.png)
 
 有锁状态：在加写锁时如果当前AQS已经是有锁状态，则需要进一步处理。有锁状态主要分为已有写锁和已有读锁状态，并且根据最终当前线程是否可直接获取锁分为两种情况：
 
@@ -2096,11 +2100,11 @@ public final void acquire(int arg) {
 
 **第二种状态转换：写锁 -> 写锁重入状态（state的状态值修改了）**。如图，head为null：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\454804165-5b58800ae5824_articlex-1554461434293.png)
+![img](assets\454804165-5b58800ae5824_articlex-1554461434293.png)
 
 **第三种状态转换：写锁 -> 写锁非重入等待**。状态如图，head指向的thread=null，且waitStatus=-1，所以才会出现下面有两个节点的情况：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3879161302-5b58800a41983_articlex-1554461434419.png)
+![img](assets\3879161302-5b58800a41983_articlex-1554461434419.png)
 
 **在非重入状态，当前线程创建等待节点追加到等待队列队尾，如果当前头结点为空，则需要创建一个默认的头结点。 之后再当前获取锁的线程释放锁后，会唤醒等待中的节点，即为thread1。如果当前等待队列存在多个等待节点，由于thread1等待节点为EXCLUSIVE模式，则只会唤醒当前一个节点，不会传播唤醒信号。**
 
@@ -2123,7 +2127,7 @@ public final void acquireShared(int arg) {
 
 在无锁状态进行加锁操作，线程调用acquireShared 函数，首先使用tryAcquireShared函数判断共享锁是否可获取成功，由于当前为无锁状态则获取锁一定成功（如果同时多个线程在读锁进行竞争，则只有一个线程能够直接获取读锁，其他线程需要进入fullTryAcquireShared函数继续进行锁的获取，该函数在后文说明）。当前线程获取读锁成功后，AQS内部结构如图所示：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\594587484-5b58800a422be_articlex-1554461434596.png)
+![img](assets\594587484-5b58800a422be_articlex-1554461434596.png)
 
 其中有两个新的变量：firstReader及firstReaderHoldCount。firstReader指向在无锁状态下第一个获取读锁的线程，firstReaderHoldCount记录第一个获取读锁的线程持有当前锁的计数（主要用于重入）。
 
@@ -2149,13 +2153,13 @@ public final void acquireShared(int arg) {
 
 **第二种状态装换：已有读锁 -> 第一个读锁线程重入**。如图：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\1282819964-5b5880089f6c9_articlex-1554461434757.png)
+![img](assets\1282819964-5b5880089f6c9_articlex-1554461434757.png)
 
 **第三种状态转换：已有读锁（等待队列为空） -> 非首节点获取读锁：**
 
 非首节点获取读锁：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\2489231474-5b5880083f137_articlex-1554461434883.png)
+![img](assets\2489231474-5b5880083f137_articlex-1554461434883.png)
 
 根据上图所示，thread0为首节点，thread1线程继续申请读锁，获取成功后使用ThreadLocal链接的方式进行存储计数对象，并且由于其为最近获取读锁的线程，则cachedHoldCounter对象设置指向thread1对应的计数对象。ThreadLocal中的Entry使用的是WeakReference，所以在发生一次GC时，是会将WeakReference进行回收。
 
@@ -2163,11 +2167,11 @@ public final void acquireShared(int arg) {
 
 在当前锁已经被读锁获取，且等待队列不为空的情况下 ，可知等待队列的头结点一定为写锁获取等待，**这是由于在读写锁实现过程中，如果某线程获取了读锁，则会唤醒当前等到节点之后的所有等待模式为SHARED的节点，直到队尾或遇到EXCLUSIVE模式的等待节点**（具体实现函数为setHeadAndPropagate后续还会遇到）。所以可以确定当前为读锁状态其有等待节点情况下，首节点一定是写锁等待。此时head对应的thread=null，waitStatus=-1，如图所示：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\790767399-5b58800924c87_articlex-1554461435091.png)
+![img](assets\790767399-5b58800924c87_articlex-1554461435091.png)
 
 上图展示当前thread0与thread1线程获取读锁，thread0为首个获取读锁的节点，并且thread2线程在等待获取写锁。 在上图显示的状态下，无论公平锁还是非公平锁的实现，新的读锁加锁一定会进行排队，添加等待节点在写锁等待节点之后，这样可以防止写操作的饿死。申请读锁后的状态如图所示：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3433646749-5b58800a4cd7a_articlex-1554461435093.png)
+![img](assets\3433646749-5b58800a4cd7a_articlex-1554461435093.png)
 
 如图所示，在当前锁被为读锁且有等待队列情况下，thread3及thread4线程申请读锁，则被封装为等待节点追加到当前等待队列后，节点模式为SHARED，线程使用LockSupport.park函数进入阻塞状态，让出CPU资源，直到前驱的等待节点完成锁的获取和释放后进行唤醒。
 
@@ -2177,7 +2181,7 @@ public final void acquireShared(int arg) {
 
 当前线程申请读锁时发现写锁已经被获取，则无论等待队列是否为空，线程一定会需要加入等待队列（注意在非公平锁实现且前序没有写锁申请的等待，线程有机会抢占获取锁而不进入等待队列）。写锁被获取的情况下，AQS状态为如下状态：
 
-![img](C:\Users\17646\Desktop\简历内容\assets\3131560188-5b588009a8253_articlex-1554461435094.png)
+![img](assets\3131560188-5b588009a8253_articlex-1554461435094.png)
 
 在两种情况下，读锁获取都会进入等待队列等待前序节点唤醒，这里不再赘述。
 
@@ -2498,7 +2502,7 @@ Node nextWaiter;
 
 同时还有一点需要注意的是：我们可以多次调用lock.newCondition()方法创建多个condition对象，也就是一个lock可以持有多个等待队列。**而在之前利用Object的方式实际上是指在对象Object对象监视器上只能拥有一个同步队列和一个等待队列，而并发包中的Lock拥有一个同步队列和多个等待队列。**示意图如下：
 
-![AQSææå¤ä¸ªCondition.png](C:\Users\17646\Desktop\简历内容\assets\16334382e65f9685)
+![AQSææå¤ä¸ªCondition.png](assets\16334382e65f9685)
 
 #### ② await与signal/signalAll实现原理
 
@@ -2603,7 +2607,7 @@ while (!isOnSyncQueue(node)) {
 
 总结下，就是**当前线程被中断或者调用condition.signal/condition.signalAll方法当前节点移动到了同步队列后** ，这是当前线程退出await方法的前提条件。当退出while循环后就会调用acquireQueued(node, savedState)，这个方法在介绍AQS的底层实现时说过了，若感兴趣的话可以去看这篇文章，该方法的作用是在自旋过程中线程不断尝试获取同步状态，直至成功（线程获取到lock）。这样也说明了退出await方法必须是已经获得了condition引用（关联）的lock。到目前为止，开头的三个问题我们通过阅读源码的方式已经完全找到了答案，也对await方法的理解加深。await方法示意图如下图：
 
-![awaitæ¹æ³ç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\16334382e74cead3)
+![awaitæ¹æ³ç¤ºæå¾](assets\16334382e74cead3)
 
 如图，**调用condition.await方法的线程必须是已经获得了lock**，也就是当前线程是同步队列中的头节点。调用该方法后会使得当前线程所封装的Node尾插入到等待队列中。
 
@@ -2668,7 +2672,7 @@ final boolean transferForSignal(Node node) {
 
 调用condition的signal的前提条件是当前线程已经获取了lock，该方法会使得等待队列中的头节点即等待时间最长的那个节点移入到同步队列，而移入到同步队列后才有机会使得等待线程被唤醒，即从await方法中的LockSupport.park(this)方法中返回，从而才有机会使得调用await方法的线程成功退出。
 
-![signalæ§è¡ç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\16334382e7650d62)
+![signalæ§è¡ç¤ºæå¾](assets\16334382e7650d62)
 
 ```Java
 public final void signalAll() {
@@ -2692,7 +2696,7 @@ private void doSignalAll(Node first) {
 
 该方法只不过时间等待队列中的每一个节点都移入到同步队列中，即“通知”当前调用condition.await()方法的每一个线程。
 
-![conditionä¸çç­å¾éç¥æºå¶.png](C:\Users\17646\Desktop\简历内容\assets\16334382e7911395)
+![conditionä¸çç­å¾éç¥æºå¶.png](assets\16334382e7911395)
 
 线程awaitThread先通过lock.lock()方法获取锁成功后调用了condition.await方法进入等待队列，而另一个线程signalThread通过lock.lock()方法获取锁成功后调用了condition.signal或者signalAll方法，使得线程awaitThread能够有机会移入到同步队列中，当其他线程释放lock后使得线程awaitThread能够有机会获取lock，从而使得线程awaitThread能够从await方法中退出执行后续操作。如果awaitThread获取lock失败会直接进入到同步队列。
 
@@ -3029,9 +3033,9 @@ countDownLatch只能使用一次，而CyclicBarrier方法可以使用reset()方�
 
 核心方法dowait()的整个流程为：
 
-![1557563302994](C:\Users\17646\Desktop\简历内容\assets\1557563302994.png)
+![1557563302994](assets\1557563302994.png)
 
-![1557563365221](C:\Users\17646\Desktop\简历内容\assets\1557563365221.png)
+![1557563365221](assets\1557563365221.png)
 
 内部使用ReentrantLock进行实现，
 
@@ -3835,7 +3839,7 @@ public void execute(Runnable command) {
 
 execute方法执行流程如下：
 
-![executor.png](C:\Users\17646\Desktop\简历内容\assets\executor.png)
+![executor.png](assets\executor.png)
 
 ###### ④addWorker方法
 
@@ -4291,7 +4295,7 @@ private void processWorkerExit(Worker w, boolean completedAbruptly) {
 
 至此，processWorkerExit执行完之后，工作线程被销毁，以上就是整个工作线程的生命周期，从execute方法开始，Worker使用ThreadFactory创建新的工作线程，runWorker通过getTask获取任务，然后执行任务，如果getTask返回null，进入processWorkerExit方法，整个线程结束，如图所示：
 
-![threadpool-lifecycle.png](C:\Users\17646\Desktop\简历内容\assets\threadpool-lifecycle.png)
+![threadpool-lifecycle.png](assets\threadpool-lifecycle.png)
 
 ###### ⑧tryTerminate方法
 
@@ -4680,7 +4684,7 @@ ThreadLocal.ThreadLocalMap threadLocals = null;
 
 Entry是一个以ThreadLocal为key，Object为value的键值对，另外需要注意的是这里的**threadLocal是弱引用，因为Entry继承了WeakReference，在Entry的构造方法中，调用了super(k)方法就会将threadLocal实例包装成一个WeakReferenece。**到这里我们可以用一个图来理解下thread，threadLocal，threadLocalMap，Entry之间的关系：
 
-![ThreadLocalåå¼ç¨é´çå³ç³"](C:\Users\17646\Desktop\简历内容\assets\16334681776bb805)
+![ThreadLocalåå¼ç¨é´çå³ç³"](assets\16334681776bb805)
 
 注意上图中的实线表示强引用，虚线表示弱引用。如图所示，每个线程实例中可以通过threadLocals获取到threadLocalMap，而threadLocalMap实际上就是一个以threadLocal实例为key，任意对象为value的Entry数组。当我们为threadLocal变量赋值，实际上就是以当前threadLocal实例为key，值为value的Entry往这个threadLocalMap中存放。
 
@@ -4693,7 +4697,7 @@ Entry是一个以ThreadLocal为key，Object为value的键值对，另外需要�
 - 弱引用：也是用来描述非必须对象的，但是它的强度要比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生之前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉被弱引用关联的对象。WeakReference类来实现弱引用。
 - 虚引用：也称幽灵引用或幻影引用，它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为这个对象设置虚引用关联的唯一目的就是希望能在这个对象被收集器回收时收到一个系统通知。PhantomReference类来实现虚引用。
 
-![1557642354809](C:\Users\17646\Desktop\简历内容\assets\1557642354809.png)
+![1557642354809](assets\1557642354809.png)
 
 ##### 2）set方法
 
@@ -4701,17 +4705,17 @@ Entry是一个以ThreadLocal为key，Object为value的键值对，另外需要�
 
 散列表：理想情况下，散列表就是一个包含关键字的固定大小的数组，通过使用散列函数，将关键字映射到数组的不同位置。
 
-![çæ³æ£åè¡¨çä¸ä¸ªç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\1633468177649b66)
+![çæ³æ£åè¡¨çä¸ä¸ªç¤ºæå¾](assets\1633468177649b66)
 
 理想情况下，哈希函数可以将关键字均匀发的分散到数组的不同位置，不会出现两个关键字散列值相同（假设关键字数量小于数组的大小）的情况。但是在实际使用中，经常会出现多个关键字散列值相同的情况（被映射到数组的同一个位置），我们将这种情况称为散列冲突。为了解决散列冲突，主要采用下面两种方式：分离链表发（separate chaining）和开放定址法（open addressing）。
 
 - 分离链表法：分离链表法使用链表解决冲突，将散列值相同的元素都保存到一个链表中。当查询的时候，首先找到元素所在的链表，然后遍历链表查找对应的元素，典型实现为hashMap，concurrentHashMap的拉链法。下面是一个示意图：
 
-  ![åç¦"é¾è¡¨æ³ç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\1633468177fb894c-1554395814825)
+  ![åç¦"é¾è¡¨æ³ç¤ºæå¾](assets\1633468177fb894c-1554395814825)
 
 - 开放定址法：开放定址法不会创建链表，当关键字散列到的数组单元已经被另外一个关键字占用的时候，就会尝试在数组中寻找其他的单元，直到找到一个空的单元。探测数组空单元的方式有很多，这里介绍一种最简单的 -- 线性探测法。线性探测法就是从冲突的数组单元开始，依次往后搜索空单元，如果到数组尾部，再从头开始搜索（环形查找）。如下图所示：
 
-  ![å¼æ¾å®åæ³ç¤ºæå¾](C:\Users\17646\Desktop\简历内容\assets\1633468177ede9ab)
+  ![å¼æ¾å®åæ³ç¤ºæå¾](assets\1633468177ede9ab)
 
 **ThreadLocalMap 中使用开放地址法来处理散列冲突**，而 HashMap 中使用的分离链表法。之所以采用不同的方式主要是因为：在 ThreadLocalMap 中的散列值分散的十分均匀，很少会出现冲突。并且 ThreadLocalMap 经常需要清除无用的对象，使用纯数组更加方便。
 
@@ -5544,7 +5548,7 @@ public class AtomicDemo {
 
 下面的例子中，创建了printThread，它用来接受main线程的输入，任何 main线程的输入均通过PipedWriter写入，而printThread在另一端通过PipedReader将内容读出并打印。
 
-![1555060216527](C:\Users\17646\Desktop\简历内容\assets\1555060216527.png)
+![1555060216527](assets\1555060216527.png)
 
 对于Piped类型的流，必须先要进行绑定，也就是调用connect()方法，如果没有将输入/输出流绑定起来，对于该流的访问将会抛出异常。
 
@@ -5558,7 +5562,7 @@ Fork/Join框架是Java 7提供的一个用于并行执行任务的框架，是�
 
 我们再通过Fork和Join这两个单词来理解一下Fork/Join框架。Fork就是把一个大任务切分 为若干子任务并行的执行，Join就是合并这些子任务的执行结果，最后得到这个大任务的结 果。比如计算1+2+…+10000，可以分割成10个子任务，每个子任务分别对1000个数进行求和， 最终汇总这10个子任务的结果。Fork/Join的运行流程如图6-6所示。
 
-![1555146977842](C:\Users\17646\Desktop\简历内容\assets\1555146977842.png)
+![1555146977842](assets\1555146977842.png)
 
 
 
@@ -5566,7 +5570,7 @@ Fork/Join框架是Java 7提供的一个用于并行执行任务的框架，是�
 
 工作窃取（work-stealing）算法是指某个线程从其他队列里窃取任务来执行。那么，为什么需要使用工作窃取算法呢？假如我们需要做一个比较大的任务，可以把这个任务分割为若干互不依赖的子任务，为了减少线程间的竞争，把这些子任务分别放到不同的队列里，并为每个队列创建一个单独的线程来执行队列里的任务，线程和队列一一对应。比如A线程负责处理A队列里的任务。但是，有的线程会先把自己队列里的任务干完，而其他线程对应的队列里还有任务等待处理。干完活的线程与其等着，不如去帮其他线程干活，于是它就去其他线程的队列里窃取一个任务来执行。而在这时它们会访问同一个队列，所以为了减少窃取任务线程和被窃取任务线程之间的竞争，通常会使用双端队列，被窃取任务线程永远从双端队列的头部拿任务执行，而窃取任务的线程永远从双端队列的尾部拿任务执行。
 
-![1555147341409](C:\Users\17646\Desktop\简历内容\assets\1555147341409.png)
+![1555147341409](assets\1555147341409.png)
 
 工作窃取算法的优点：充分利用线程进行并行计算，减少了线程间的竞争。
 
@@ -5668,17 +5672,17 @@ ForkJoinPool由ForkJoinTask数组和ForkJoinWorkerThread数组组成，ForkJoinT
 
 当我们调用ForkJoinTask的fork方法时，程序会调用ForkJoinWorkerThread的pushTask方法异步地执行这个任务，然后立即返回结果。代码如下。
 
-![1555152281606](C:\Users\17646\Desktop\简历内容\assets\1555152281606.png)
+![1555152281606](assets\1555152281606.png)
 
 pushTask方法把当前任务存放在ForkJoinTask数组队列里。然后再调用ForkJoinPool的 signalWork()方法唤醒或创建一个工作线程来执行任务。代码如下。
 
-![1555152329950](C:\Users\17646\Desktop\简历内容\assets\1555152329950.png)
+![1555152329950](assets\1555152329950.png)
 
 **ForkJoinTask的join方法实现原理：**
 
 Join方法的主要作用是阻塞当前线程并等待获取结果。让我们一起看看ForkJoinTask的join方法的实现，代码如下。
 
-![1555152393125](C:\Users\17646\Desktop\简历内容\assets\1555152393125.png)
+![1555152393125](assets\1555152393125.png)
 
 首先，它调用了doJoin()方法，通过doJoin()方法得到当前任务的状态来判断返回什么结果，任务状态有4种：已完成（NORMAL）、被取消（CANCELLED）、信号（SIGNAL）和出现异常 （EXCEPTIONAL）。
 
@@ -5689,7 +5693,7 @@ Join方法的主要作用是阻塞当前线程并等待获取结果。让我们�
 
 让我们再来分析一下doJoin()方法的实现代码。
 
-![1555152479084](C:\Users\17646\Desktop\简历内容\assets\1555152479084.png)
+![1555152479084](assets\1555152479084.png)
 
 在doJoin()方法里，首先通过查看任务的状态，看任务是否已经执行完成，如果执行完成，则直接返回任务状态；如果没有执行完，则从任务数组里取出任务并执行。如果任务顺利执行 完成，则设置任务状态为NORMAL，如果出现异常，则记录异常，并将任务状态设置为 EXCEPTIONAL
 
