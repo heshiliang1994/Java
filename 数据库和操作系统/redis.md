@@ -1316,3 +1316,9 @@ Redis存储的数据都使用redisObject来封装，包括string、hash、list�
 综上所述，共享对象池与maxmemory+LRU策略冲突，使用时需要注意。
 
 ## 十、物理内存和虚拟内存
+
+## 十一、常见问题
+
+1、大key、热key导致输入缓冲区被打满
+
+2、如何发现热key
