@@ -17,6 +17,8 @@ redis [1] > GET foo
 
 Redis支持五种数据类型：string（字符串），hash（哈希），list（列表），set（集合）及zset(sorted set：有序集合)。
 
+添加了一行文案
+
 ### 1.string 字符串
 
 string 是 redis 最基本的类型，你可以理解成与 Memcached 一模一样的类型，**一个 key 对应一个 value**。
